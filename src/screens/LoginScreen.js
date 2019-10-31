@@ -2,18 +2,29 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, AsyncStorage, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import api from '../services/api';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import md5 from 'md5';
 
 const LoginScreen = ({ navigation }) => {
-    const [matricula, setMatricula] = useState('2156554');
-    const [senha, setSenha] = useState('accc9105df5383111407fd5b41255e23');
+    const [matricula, setMatricula] = useState('');
+    const [senha, setSenha] = useState('');
+    var md5 = require('md5');
+    // const [matricula, setMatricula] = useState('2156554');
+    // const [senha, setSenha] = useState('accc9105df5383111407fd5b41255e23');
     const [errorMessage, setErrorMessage] = useState('');
+
+    handleSenha= (senha) => {
+        setSenha(senha);
+    };
 
     async function efetuarLogin(){
         try{
+            senhaHash = md5(senha);
+
             const response = await api.post('/login', {
                 matricula,
-                senha
+                senha: senhaHash
             });
+
 
             const { idusuario, nome } = response.data;
             await AsyncStorage.setItem('idusuario', JSON.stringify(idusuario));
@@ -24,8 +35,6 @@ const LoginScreen = ({ navigation }) => {
             setErrorMessage('Usuário ou senha inválidos!');
         }
     }
-
-    // efetuarLogin();
 
     return (
         <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
@@ -51,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
                     autoCorrect={false}
                     secureTextEntry={true}
                     value={senha}
-                    onChangeText={setSenha}
+                    onChangeText={handleSenha}
                     placeholder="SENHA"
                     placeholderTextColor="white"
                 />
