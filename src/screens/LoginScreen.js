@@ -20,27 +20,35 @@ const LoginScreen = ({ navigation }) => {
         })
     }, []);
 
+    handleMatricula = (matricula) => {
+        setMatricula(matricula);
+        setErrorMessage('');
+    };
+
     handleSenha= (senha) => {
         setSenha(senha);
+        setErrorMessage('');
     };
 
     async function efetuarLogin(){
+        senhaHash = md5(senha);
         try{
-            senhaHash = md5(senha);
-
             const response = await api.post('/login', {
                 matricula,
                 senha: senhaHash
             });
-
-
-            const { idusuario, nome } = response.data;
-            await AsyncStorage.setItem('idusuario', JSON.stringify(idusuario));
-            await AsyncStorage.setItem('nome', nome);
-            await AsyncStorage.setItem('matricula', matricula);
-            navigation.navigate('Main');
+            if(!response.data.message){
+                const { idusuario, nome } = response.data;
+                await AsyncStorage.setItem('idusuario', JSON.stringify(idusuario));
+                await AsyncStorage.setItem('nome', nome);
+                await AsyncStorage.setItem('matricula', matricula);
+                setErrorMessage('');
+                navigation.navigate('Main');
+            }else{
+                setErrorMessage(response.data.message);
+            }
         }catch(err){
-            setErrorMessage('Usuário ou senha inválidos!');
+            return setErrorMessage('ATENÇÃO: Servidor fora do ar!');
         }
     }
 
@@ -49,16 +57,15 @@ const LoginScreen = ({ navigation }) => {
             <MaterialCommunityIcons name="food-variant" style={styles.logo}/>
             <Text style={styles.titulo}>seja bem-vindo</Text>
             <Text style={styles.titulo}>ao bandejao</Text>
-            <Text>{errorMessage}</Text>
+            <Text style={styles.error}>{errorMessage}</Text>
             <View style={styles.backgroundStyle}>
-                <Text>{errorMessage}</Text>
                 <TextInput
                     style={styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType={'numeric'}
                     value={matricula}
-                    onChangeText={setMatricula}
+                    onChangeText={handleMatricula}
                     placeholder="USUÁRIO"
                     placeholderTextColor="white"
                 />
@@ -133,6 +140,11 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         fontSize: 35,
         marginLeft: 30
+    },
+    error: {
+        marginTop: 15,
+        fontSize: 16,
+        color: 'white'
     }
 });
 

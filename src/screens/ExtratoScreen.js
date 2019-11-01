@@ -9,23 +9,28 @@ const ExtratoScreen = ({ navigation }) => {
     const [nome, setNome] = useState('');
     const [saldo, setSaldo] = useState('');
     const id = navigation.getParam('idcartao');
+    const [error, setError] = useState('');
 
     AsyncStorage.getItem('nome', (err, item) => setNome(item));
     AsyncStorage.getItem('saldo', (err, item) => setSaldo(item));
 
     useEffect(() => {
         async function loadExtrato(){
-            const response = await api.get('/users/extrato', {
-                headers: {
-                    id_cartao: id
-                }
-            });
-
-            setExtrato(response.data.map(item => {
-                const date = parseISO(item.data);
-                item.data = format(date, 'dd/MM/yyyy');
-                return item;
-            }));
+            try{
+                const response = await api.get('/users/extrato', {
+                    headers: {
+                        id_cartao: id
+                    }
+                });
+    
+                setExtrato(response.data.map(item => {
+                    const date = parseISO(item.data);
+                    item.data = format(date, 'dd/MM/yyyy');
+                    return item;
+                }));
+            }catch(error){
+                setError('Atenção: Servidor fora do ar.');
+            }
         }
 
         loadExtrato();
@@ -36,6 +41,7 @@ const ExtratoScreen = ({ navigation }) => {
         <SafeAreaView>
             <TopMenu nome={nome} saldo={saldo}></TopMenu>
         <Text style={styles.titulo}>extrato - últimos 30 dias</Text>
+        <Text style={styles.error}>{error}</Text>
         <FlatList 
                     horizontal={false}
                     data={extrato}
@@ -91,6 +97,11 @@ const styles = StyleSheet.create({
     },
     textExtratoSaldo: {
         color: '#403E3F'
+    },
+    error: {
+        marginLeft: 15,
+        fontSize: 16,
+        color: 'red'
     }
 });
 

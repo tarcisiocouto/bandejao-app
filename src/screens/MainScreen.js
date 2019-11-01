@@ -10,6 +10,7 @@ const MainScreen = ({ navigation }) => {
     const [matricula, setMatricula] = useState('');
     const [idusuario, setIdUsuario] = useState('');
     const [saldo, setSaldo] = useState('');
+    const [error, setError] = useState('');
     
     AsyncStorage.getItem('nome', (err, item) => setNome(item));
     AsyncStorage.getItem('matricula', (err, item) => setMatricula(item));
@@ -19,15 +20,18 @@ const MainScreen = ({ navigation }) => {
         async function loadExtrato(){
             let id = await AsyncStorage.getItem('idusuario');
             setIdUsuario(id);
+            try{
+                const resposta = await api.get('/users/saldo', {
+                    headers: {
+                        user_id: id
+                    }
+                });
 
-            const resposta = await api.get('/users/saldo', {
-                headers: {
-                    user_id: id
-                }
-            });
-
-            setSaldo(resposta.data.saldo);
-            await AsyncStorage.setItem('saldo', resposta.data.saldo);
+                setSaldo(resposta.data.saldo);
+                await AsyncStorage.setItem('saldo', resposta.data.saldo);
+            }catch(error){
+                setError('Atenção: Servidor fora do ar.');
+            }
             
         }
 
@@ -46,6 +50,7 @@ const MainScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <TopMenu nome={nome} saldo={saldo}></TopMenu>
+            <Text style={styles.error}>{error}</Text>
             <View style={styles.boxContainer}>
                 <TouchableOpacity onPress={() => extratoScreen(idusuario)}>
                     <View style={styles.boxMenu}>
@@ -91,6 +96,11 @@ const styles = StyleSheet.create({
         fontSize: 36,
         color: '#238E21'
     },
+    error: {
+        marginLeft: 15,
+        fontSize: 16,
+        color: 'red'
+    }
 });
 
 export default MainScreen;
