@@ -24,6 +24,10 @@
 #### Formating dates
 https://date-fns.org/docs/Getting-Started
 
+#### install md5 equal to php md5
+
+http://locutus.io/php/strings/md5/
+
 My App
 
     Client ID

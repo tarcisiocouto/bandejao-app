@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, AsyncStorage, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import api from '../services/api';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import md5 from 'md5';
 
 const LoginScreen = ({ navigation }) => {
-    const [matricula, setMatricula] = useState('');
-    const [senha, setSenha] = useState('');
+    // const [matricula, setMatricula] = useState('');
+    // const [senha, setSenha] = useState('');
     var md5 = require('md5');
-    // const [matricula, setMatricula] = useState('2156554');
-    // const [senha, setSenha] = useState('accc9105df5383111407fd5b41255e23');
+    const [matricula, setMatricula] = useState('2156554');
+    const [senha, setSenha] = useState('tt');
     const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        AsyncStorage.getItem('idusuario').then(idusuario => {
+            if(idusuario){
+                navigation.navigate('Main');
+            }
+        })
+    }, []);
 
     handleSenha= (senha) => {
         setSenha(senha);

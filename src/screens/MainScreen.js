@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TopMenu from '../components/TopMenu';
 import api from '../services/api';
-import CartaoScreen from './CartaoScreen';
 
 const MainScreen = ({ navigation }) => {
     const [nome, setNome] = useState('');
