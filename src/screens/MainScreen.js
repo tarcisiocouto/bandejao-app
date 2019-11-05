@@ -52,14 +52,14 @@ const MainScreen = ({ navigation }) => {
             <TopMenu nome={nome} saldo={saldo}></TopMenu>
             <Text style={styles.error}>{error}</Text>
             <View style={styles.boxContainer}>
-                <TouchableOpacity onPress={() => extratoScreen(idusuario)}>
-                    <View style={styles.boxMenu}>
+                <TouchableOpacity style={styles.boxMenu} onPress={() => extratoScreen(idusuario)}>
+                    <View >
                         <MaterialCommunityIcons name="format-list-bulleted" style={styles.icon}></MaterialCommunityIcons>
                         <Text style={styles.textMenu}>extrato</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => cartaoScreen(matricula)}>
-                    <View style={styles.boxMenu}>
+                <TouchableOpacity style={styles.boxMenu} onPress={() => cartaoScreen(matricula)}>
+                    <View >
                         <MaterialCommunityIcons name="barcode" style={styles.icon}></MaterialCommunityIcons>
                         <Text style={styles.textMenu}>código de barra</Text>
                     </View>
@@ -76,17 +76,15 @@ const styles = StyleSheet.create({
     },
     boxContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-around',
     },
     boxMenu: {
         backgroundColor: '#FEFBF9',
-        height: 120,
-        width: 160,
-        marginLeft: 15,
-        marginTop: 15,
-        marginRight: 15,
-        paddingTop: 35,
-        paddingLeft: 20
+        width: '42%',
+        height: '130%',
+        margin: '4%',
+        paddingTop: 15,
+        paddingLeft: 15
     },
     textMenu: {
         fontWeight: 'bold',

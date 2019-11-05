@@ -4,6 +4,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import MainScreen from './src/screens/MainScreen';
 import ExtratoScreen from './src/screens/ExtratoScreen';
 import CartaoScreen from './src/screens/CartaoScreen';
+import { Platform } from 'react-native';
 
 const navigator = createStackNavigator({
   Login: LoginScreen,
@@ -13,7 +14,7 @@ const navigator = createStackNavigator({
 }, {
   initialRouteName: 'Login',
   defaultNavigationOptions: {
-    header: null
+    header: Platform.OS === 'ios' ? null : 0,
   }
 });
 

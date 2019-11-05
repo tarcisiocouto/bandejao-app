@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
     extratoList: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 350,
-        marginTop: 15,
-        marginLeft: 15,
+        width: '90%',
+        marginTop: '5%',
+        marginLeft: '5%',
         backgroundColor: '#FEFBF9',
         paddingLeft: 10,
         paddingTop: 7,

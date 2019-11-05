@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
         marginTop: 15,
-        marginLeft: 70,
+        alignSelf: 'center',
         color: 'white'
     },
     logo: {
